@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
 
-const SortingBubble = ({
+const HeapSort = ({
   elements,
   setElements,
   sorting,
@@ -46,24 +46,48 @@ const SortingBubble = ({
     });
   }, [elements, activeColumns]);
 
-  const bubbleSort = async () => {
-    const len = elements.length;
+  const heapSort = async () => {
+    const n = originalData.length;
 
-    for (let i = 0; i < len - 1; i++) {
-      for (let j = 0; j < len - i - 1; j++) {
-        setActiveColumns([j, j + 1]);
-        if (elements[j] > elements[j + 1]) {
-          const temp = elements[j];
-          elements[j] = elements[j + 1];
-          elements[j + 1] = temp;
+    // Xây dựng cây heap (sắp xếp cây heap)
+    for (let i = Math.floor(n / 2) - 1; i >= 0; i--) {
+      await heapify(originalData, n, i);
+    }
 
-          await sleep(500);
-          setElements([...elements]);
-        }
-      }
+    // Lần lượt loại bỏ phần tử gốc (phần tử lớn nhất) và đưa vào cuối mảng đã sắp xếp
+    for (let i = n - 1; i > 0; i--) {
+      await sleep(500);
+      setActiveColumns([0, i]);
+      swap(originalData, 0, i);
+      await heapify(originalData, i, 0);
+      setElements([...originalData]);
     }
 
     setActiveColumns([]);
+  };
+
+  const heapify = async (arr, n, i) => {
+    let largest = i;
+    const left = 2 * i + 1;
+    const right = 2 * i + 2;
+
+    if (left < n && arr[left] > arr[largest]) largest = left;
+
+    if (right < n && arr[right] > arr[largest]) largest = right;
+
+    if (largest !== i) {
+      setActiveColumns([largest, i]);
+      await sleep(500);
+      swap(arr, i, largest);
+      await heapify(arr, n, largest);
+      setElements([...arr]);
+    }
+  };
+
+  const swap = (arr, i, j) => {
+    const temp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = temp;
   };
 
   const sleep = (ms) => {
@@ -71,7 +95,7 @@ const SortingBubble = ({
   };
 
   const handleSort = () => {
-    bubbleSort();
+    heapSort();
   };
 
   const handleReset = () => {
@@ -81,7 +105,7 @@ const SortingBubble = ({
 
   return (
     <div>
-      <h1 className="text-center">Bubble Sort</h1>
+      <h1 className="text-center">Heap Sort</h1>
       <div>
         <Bar data={chartData} width={3} height={1} />
       </div>
@@ -97,4 +121,4 @@ const SortingBubble = ({
   );
 };
 
-export default SortingBubble;
+export default HeapSort;

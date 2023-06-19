@@ -49,12 +49,6 @@ const QuickSort = ({
     });
   }, [elements, activeColumns]);
 
-  useEffect(() => {
-    if (sorting) {
-      quickSort([...originalData], 0, originalData.length - 1);
-    }
-  }, [sorting]);
-
   const quickSort = async (array, start, end) => {
     setSorting(true); // Update sorting state at the beginning
 
@@ -79,7 +73,7 @@ const QuickSort = ({
 
     for (let i = start; i < end; i++) {
       setActiveColumns([i, end]);
-      await sleep(100);
+      await sleep(500);
 
       if (array[i] <= pivotValue) {
         await swap(array, i, pivotIndex);
@@ -95,7 +89,7 @@ const QuickSort = ({
   };
 
   const swap = async (array, index1, index2) => {
-    await sleep(100);
+    await sleep(500);
 
     const temp = array[index1];
     array[index1] = array[index2];
@@ -109,7 +103,7 @@ const QuickSort = ({
   };
 
   const handleSort = () => {
-    setSorting(true);
+    quickSort([...originalData], 0, originalData.length - 1);
   };
 
   const handleReset = () => {
@@ -119,6 +113,7 @@ const QuickSort = ({
 
   return (
     <div>
+      <h1 className="text-center">Quick Sort</h1>
       <div>
         <Bar data={chartData} width={3} height={1} />
         <button onClick={handleSort} disabled={sorting}>

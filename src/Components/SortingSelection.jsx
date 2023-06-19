@@ -2,7 +2,14 @@
 import { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
 
-const SortingSelection = ({ elements, setElements, sorting, activeColumns, setActiveColumns, originalData }) => {
+const SortingSelection = ({
+  elements,
+  setElements,
+  sorting,
+  activeColumns,
+  setActiveColumns,
+  originalData,
+}) => {
   const [chartData, setChartData] = useState({
     labels: elements.map((_, idx) => idx.toString()),
     datasets: [
@@ -24,22 +31,20 @@ const SortingSelection = ({ elements, setElements, sorting, activeColumns, setAc
           label: "Values",
           data: elements,
           backgroundColor: elements.map((_, idx) =>
-            activeColumns.includes(idx) ? "rgba(220, 53, 69, 0.6)" : "rgba(0,123,255,0.5)"
+            activeColumns.includes(idx)
+              ? "rgba(220, 53, 69, 0.6)"
+              : "rgba(0,123,255,0.5)"
           ),
           borderColor: elements.map((_, idx) =>
-            activeColumns.includes(idx) ? "rgba(220, 53, 69, 1)" : "rgba(0,123,255,1)"
+            activeColumns.includes(idx)
+              ? "rgba(220, 53, 69, 1)"
+              : "rgba(0,123,255,1)"
           ),
           borderWidth: 1,
         },
       ],
     });
   }, [elements, activeColumns]);
-
-  // useEffect(() => {
-  //   if (sorting) {
-  //     selectionSort();
-  //   }
-  // }, [sorting]);
 
   const selectionSort = async () => {
     let currentValueNewIndex;
@@ -58,7 +63,7 @@ const SortingSelection = ({ elements, setElements, sorting, activeColumns, setAc
         originalData[i] = originalData[currentValueNewIndex];
         originalData[currentValueNewIndex] = temp;
       }
-      await sleep(1000);
+      await sleep(500);
       setElements([...originalData]);
     }
 
@@ -80,15 +85,15 @@ const SortingSelection = ({ elements, setElements, sorting, activeColumns, setAc
 
   return (
     <div>
-      <h1>Selection Sort</h1>
+      <h1 className="text-center">Selection Sort</h1>
       <div>
         <Bar data={chartData} width={3} height={1} />
       </div>
       <div>
-        <button onClick={handleSort} disabled={sorting}>
+        <button onClick={handleSort} disabled={sorting} className="button-34">
           Sort
         </button>
-        <button onClick={handleReset} disabled={sorting}>
+        <button onClick={handleReset} disabled={sorting} className="button-34">
           Reset
         </button>
       </div>

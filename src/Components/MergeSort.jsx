@@ -48,12 +48,6 @@ const MergeSort = ({
     });
   }, [elements, activeColumns]);
 
-  useEffect(() => {
-    if (sorting) {
-      mergeSort([...originalData], 0, originalData.length - 1);
-    }
-  }, [sorting]);
-
   const mergeSort = async (array, start, end) => {
     setSorting(true); // Update sorting state at the beginning
 
@@ -120,6 +114,7 @@ const MergeSort = ({
   };
 
   const handleSort = () => {
+    mergeSort([...originalData], 0, originalData.length - 1);
     setSorting(true);
   };
 
@@ -130,7 +125,7 @@ const MergeSort = ({
 
   return (
     <div>
-      <h1>MERGE SORT </h1>
+      <h1 className="text-center">Merge Sort</h1>
       <div>
         <Bar data={chartData} width={3} height={1} />
         <button onClick={handleSort} disabled={sorting}>
