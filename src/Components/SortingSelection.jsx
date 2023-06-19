@@ -2,15 +2,7 @@
 import { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
 
-const SortingSelection = ({
-  elements,
-  setElements,
-  sorting,
-  setSorting,
-  activeColumns,
-  setActiveColumns,
-  originalData,
-}) => {
+const SortingSelection = ({ elements, setElements, sorting, activeColumns, setActiveColumns, originalData }) => {
   const [chartData, setChartData] = useState({
     labels: elements.map((_, idx) => idx.toString()),
     datasets: [
@@ -32,14 +24,10 @@ const SortingSelection = ({
           label: "Values",
           data: elements,
           backgroundColor: elements.map((_, idx) =>
-            activeColumns.includes(idx)
-              ? "rgba(220, 53, 69, 0.6)"
-              : "rgba(0,123,255,0.5)"
+            activeColumns.includes(idx) ? "rgba(220, 53, 69, 0.6)" : "rgba(0,123,255,0.5)"
           ),
           borderColor: elements.map((_, idx) =>
-            activeColumns.includes(idx)
-              ? "rgba(220, 53, 69, 1)"
-              : "rgba(0,123,255,1)"
+            activeColumns.includes(idx) ? "rgba(220, 53, 69, 1)" : "rgba(0,123,255,1)"
           ),
           borderWidth: 1,
         },
@@ -47,11 +35,11 @@ const SortingSelection = ({
     });
   }, [elements, activeColumns]);
 
-  useEffect(() => {
-    if (sorting) {
-      selectionSort();
-    }
-  }, [sorting]);
+  // useEffect(() => {
+  //   if (sorting) {
+  //     selectionSort();
+  //   }
+  // }, [sorting]);
 
   const selectionSort = async () => {
     let currentValueNewIndex;
@@ -75,7 +63,6 @@ const SortingSelection = ({
     }
 
     setActiveColumns([]);
-    setSorting(false);
   };
 
   const sleep = (ms) => {
@@ -83,7 +70,7 @@ const SortingSelection = ({
   };
 
   const handleSort = () => {
-    setSorting(true);
+    selectionSort();
   };
 
   const handleReset = () => {
