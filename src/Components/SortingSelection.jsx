@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
-import { useEffect } from "react";
-import "../index.css";
+import { useEffect, useState } from "react";
+import { Bar } from "react-chartjs-2";
 
 const SortingSelection = ({
   elements,
@@ -11,15 +11,49 @@ const SortingSelection = ({
   setActiveColumns,
   originalData,
 }) => {
+  const [chartData, setChartData] = useState({
+    labels: elements.map((_, idx) => idx.toString()),
+    datasets: [
+      {
+        label: "Values",
+        data: elements,
+        backgroundColor: elements.map(() => "rgba(0,123,255,0.5)"),
+        borderColor: elements.map(() => "rgba(0,123,255,1)"),
+        borderWidth: 1,
+      },
+    ],
+  });
+
+  useEffect(() => {
+    setChartData({
+      labels: elements.map((_, idx) => idx.toString()),
+      datasets: [
+        {
+          label: "Values",
+          data: elements,
+          backgroundColor: elements.map((_, idx) =>
+            activeColumns.includes(idx)
+              ? "rgba(220, 53, 69, 0.6)"
+              : "rgba(0,123,255,0.5)"
+          ),
+          borderColor: elements.map((_, idx) =>
+            activeColumns.includes(idx)
+              ? "rgba(220, 53, 69, 1)"
+              : "rgba(0,123,255,1)"
+          ),
+          borderWidth: 1,
+        },
+      ],
+    });
+  }, [elements, activeColumns]);
+
   useEffect(() => {
     if (sorting) {
-      bubbleSort();
+      selectionSort();
     }
   }, [sorting]);
 
-  const bubbleSort = async () => {
-    // const len = elements.length;
-
+  const selectionSort = async () => {
     let currentValueNewIndex;
 
     for (let i = 0; i < originalData.length; i++) {
@@ -59,19 +93,9 @@ const SortingSelection = ({
 
   return (
     <div>
-      <div className="sorting-container">
-        {elements.map((value, index) => (
-          <div
-            key={index}
-            className={`sorting-element ${
-              activeColumns.includes(index) ? "sorting-element-active" : ""
-            }`}
-            style={{
-              height: `${value * 3}px`,
-              transition: "height 0.3s ease-in-out",
-            }}
-          ></div>
-        ))}
+      <h1>Selection Sort</h1>
+      <div>
+        <Bar data={chartData} width={3} height={1} />
       </div>
       <div>
         <button onClick={handleSort} disabled={sorting}>
