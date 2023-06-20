@@ -8,11 +8,8 @@ import MergeSort from "./Components/MergeSort";
 import HeapSort from "./Components/HeapSort";
 
 const App = () => {
-  let originalData = [
-    10, 30, 50, 20, 40, 20, 10, 55, 44, 12, 33, 65, 33, 22, 56, 44, 12, 10,
-  ];
   const [toggleButton, setToggleButton] = useState("selectionSort");
-  const [elements, setElements] = useState(originalData);
+  const [elements, setElements] = useState([7, 4, 2, 6, 2, 5, 6, 3, 9, 22]);
   const [input, setInput] = useState("");
   const [activeColumns, setActiveColumns] = useState([]);
 
@@ -20,76 +17,55 @@ const App = () => {
     return {
       elements,
       setElements,
-
       activeColumns,
       setActiveColumns,
-      originalData,
     };
-  }, [elements, setElements, activeColumns, setActiveColumns, originalData]);
+  }, [elements, setElements, activeColumns, setActiveColumns]);
 
   const handleButtonClicked = useCallback((e) => {
     setToggleButton(e.target.dataset.type);
   }, []);
 
   const handleInputChanged = useCallback((e) => {
-    console.log(e.target.value);
+    const regex = /^[0-9,]*$/;
+
+    if (regex.test(e.target.value) || e.target.value === "") {
+      setInput(e.target.value);
+    }
+
+    return;
   }, []);
 
-  const handleOnInputKeyPress = useCallback((e) => {
-    if (
-      (e.keyCode < 48 || e.keyCode > 57) & (e.keyCode != 8) &&
-      e.keyCode != 44
-    ) {
-      e.preventDefault();
-    }
-    // if (!regex.test(e.target.value)) {
-    //   e.preventDefault();
-    // }
-    // console.log(/^[0-9\b.,]+$/.test(e.target.value));
-    // // return false;
-    // return /^[0-9\b.,]+$/.test(e.target.value);
-  }, []);
+  // const handleOnInputKeyPress = useCallback((e) => {
+  //   if (
+  //     (e.keyCode < 48 || e.keyCode > 57) & (e.keyCode != 8) &&
+  //     e.keyCode != 44
+  //   ) {
+  //     e.preventDefault();
+  //   }
+  //   // if (!regex.test(e.target.value)) {
+  //   //   e.preventDefault();
+  //   // }
+  //   // console.log(/^[0-9\b.,]+$/.test(e.target.value));
+  //   // // return false;
+  //   // return /^[0-9\b.,]+$/.test(e.target.value);
+  // }, []);
   return (
     <div>
       <div className="center-div">
-        <button
-          className="button-5"
-          role="button"
-          onClick={handleButtonClicked}
-          data-type="selectionSort"
-        >
+        <button className="button-5" role="button" onClick={handleButtonClicked} data-type="selectionSort">
           Selection Sort
         </button>
-        <button
-          className="button-5"
-          role="button"
-          onClick={handleButtonClicked}
-          data-type="quickSort"
-        >
+        <button className="button-5" role="button" onClick={handleButtonClicked} data-type="quickSort">
           Quick Sort
         </button>
-        <button
-          className="button-5"
-          role="button"
-          onClick={handleButtonClicked}
-          data-type="mergeSort"
-        >
+        <button className="button-5" role="button" onClick={handleButtonClicked} data-type="mergeSort">
           Merge Sort
         </button>
-        <button
-          className="button-5"
-          role="button"
-          onClick={handleButtonClicked}
-          data-type="bubbleSort"
-        >
+        <button className="button-5" role="button" onClick={handleButtonClicked} data-type="bubbleSort">
           Bubble Sort
         </button>
-        <button
-          className="button-5"
-          role="button"
-          onClick={handleButtonClicked}
-          data-type="heapSort"
-        >
+        <button className="button-5" role="button" onClick={handleButtonClicked} data-type="heapSort">
           Heap Sort
         </button>
       </div>
@@ -100,11 +76,7 @@ const App = () => {
       {toggleButton === "bubbleSort" && <SortingBubble {...data} />}
       {toggleButton === "heapSort" && <HeapSort {...data} />}
       <div>
-        <input
-          type="text"
-          // onChange={handleInputChanged}
-          onKeyDown={handleOnInputKeyPress}
-        />
+        <input value={input} type="text" onChange={handleInputChanged} />
       </div>
     </div>
   );

@@ -2,14 +2,7 @@
 import { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
 
-const SortingSelection = ({
-  elements,
-  setElements,
-  sorting,
-  activeColumns,
-  setActiveColumns,
-  originalData,
-}) => {
+const SortingSelection = ({ elements, setElements, activeColumns, setActiveColumns }) => {
   const [chartData, setChartData] = useState({
     labels: elements.map((_, idx) => idx.toString()),
     datasets: [
@@ -31,14 +24,10 @@ const SortingSelection = ({
           label: "Values",
           data: elements,
           backgroundColor: elements.map((_, idx) =>
-            activeColumns.includes(idx)
-              ? "rgba(220, 53, 69, 0.6)"
-              : "rgba(0,123,255,0.5)"
+            activeColumns.includes(idx) ? "rgba(220, 53, 69, 0.6)" : "rgba(0,123,255,0.5)"
           ),
           borderColor: elements.map((_, idx) =>
-            activeColumns.includes(idx)
-              ? "rgba(220, 53, 69, 1)"
-              : "rgba(0,123,255,1)"
+            activeColumns.includes(idx) ? "rgba(220, 53, 69, 1)" : "rgba(0,123,255,1)"
           ),
           borderWidth: 1,
         },
@@ -49,22 +38,22 @@ const SortingSelection = ({
   const selectionSort = async () => {
     let currentValueNewIndex;
 
-    for (let i = 0; i < originalData.length; i++) {
+    for (let i = 0; i < elements.length; i++) {
       currentValueNewIndex = i;
-      for (let j = i + 1; j < originalData.length; j++) {
+      for (let j = i + 1; j < elements.length; j++) {
         setActiveColumns([j, j + 1]);
-        if (originalData[currentValueNewIndex] > originalData[j]) {
+        if (elements[currentValueNewIndex] > elements[j]) {
           currentValueNewIndex = j;
         }
       }
       if (i !== currentValueNewIndex) {
-        let temp = originalData[i];
+        let temp = elements[i];
         setActiveColumns([i, currentValueNewIndex]);
-        originalData[i] = originalData[currentValueNewIndex];
-        originalData[currentValueNewIndex] = temp;
+        elements[i] = elements[currentValueNewIndex];
+        elements[currentValueNewIndex] = temp;
       }
       await sleep(500);
-      setElements([...originalData]);
+      setElements([...elements]);
     }
 
     setActiveColumns([]);
@@ -79,7 +68,7 @@ const SortingSelection = ({
   };
 
   const handleReset = () => {
-    setElements([...originalData]);
+    setElements([]);
     setActiveColumns([]);
   };
 
@@ -90,10 +79,10 @@ const SortingSelection = ({
         <Bar data={chartData} width={3} height={1} />
       </div>
       <div>
-        <button onClick={handleSort} disabled={sorting} className="button-34">
+        <button onClick={handleSort} className="button-34">
           Sort
         </button>
-        <button onClick={handleReset} disabled={sorting} className="button-34">
+        <button onClick={handleReset} className="button-34">
           Reset
         </button>
       </div>

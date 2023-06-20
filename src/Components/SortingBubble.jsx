@@ -2,14 +2,7 @@
 import { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
 
-const SortingBubble = ({
-  elements,
-  setElements,
-  sorting,
-  activeColumns,
-  setActiveColumns,
-  originalData,
-}) => {
+const SortingBubble = ({ elements, setElements, sorting, activeColumns, setActiveColumns }) => {
   const [chartData, setChartData] = useState({
     labels: elements.map((_, idx) => idx.toString()),
     datasets: [
@@ -31,14 +24,10 @@ const SortingBubble = ({
           label: "Values",
           data: elements,
           backgroundColor: elements.map((_, idx) =>
-            activeColumns.includes(idx)
-              ? "rgba(220, 53, 69, 0.6)"
-              : "rgba(0,123,255,0.5)"
+            activeColumns.includes(idx) ? "rgba(220, 53, 69, 0.6)" : "rgba(0,123,255,0.5)"
           ),
           borderColor: elements.map((_, idx) =>
-            activeColumns.includes(idx)
-              ? "rgba(220, 53, 69, 1)"
-              : "rgba(0,123,255,1)"
+            activeColumns.includes(idx) ? "rgba(220, 53, 69, 1)" : "rgba(0,123,255,1)"
           ),
           borderWidth: 1,
         },
@@ -75,7 +64,7 @@ const SortingBubble = ({
   };
 
   const handleReset = () => {
-    setElements([...originalData]);
+    setElements([]);
     setActiveColumns([]);
   };
 

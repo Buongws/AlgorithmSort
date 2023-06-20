@@ -4,15 +4,8 @@ import { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
 import Chart from "chart.js/auto";
 import { CategoryScale } from "chart.js";
-const QuickSort = ({
-  elements,
-  setElements,
-  sorting,
-  setSorting,
-  activeColumns,
-  setActiveColumns,
-  originalData,
-}) => {
+
+const QuickSort = ({ elements, setElements, activeColumns, setActiveColumns }) => {
   const [chartData, setChartData] = useState({
     labels: elements.map((_, idx) => idx.toString()),
     datasets: [
@@ -34,14 +27,10 @@ const QuickSort = ({
           label: "Values",
           data: elements,
           backgroundColor: elements.map((_, idx) =>
-            activeColumns.includes(idx)
-              ? "rgba(220, 53, 69, 0.6)"
-              : "rgba(0,123,255,0.5)"
+            activeColumns.includes(idx) ? "rgba(220, 53, 69, 0.6)" : "rgba(0,123,255,0.5)"
           ),
           borderColor: elements.map((_, idx) =>
-            activeColumns.includes(idx)
-              ? "rgba(220, 53, 69, 1)"
-              : "rgba(0,123,255,1)"
+            activeColumns.includes(idx) ? "rgba(220, 53, 69, 1)" : "rgba(0,123,255,1)"
           ),
           borderWidth: 1,
         },
@@ -50,10 +39,7 @@ const QuickSort = ({
   }, [elements, activeColumns]);
 
   const quickSort = async (array, start, end) => {
-    setSorting(true); // Update sorting state at the beginning
-
     if (start >= end) {
-      setSorting(false); // Reset sorting state when sorting is done
       return;
     }
 
@@ -63,7 +49,7 @@ const QuickSort = ({
 
     // Update sorting state after each recursive call
     if (start === 0 && end === array.length - 1) {
-      setSorting(false); // Reset sorting state when sorting is completely done
+      return;
     }
   };
 
@@ -73,7 +59,7 @@ const QuickSort = ({
 
     for (let i = start; i < end; i++) {
       setActiveColumns([i, end]);
-      await sleep(500);
+      await sleep(200);
 
       if (array[i] <= pivotValue) {
         await swap(array, i, pivotIndex);
@@ -89,7 +75,7 @@ const QuickSort = ({
   };
 
   const swap = async (array, index1, index2) => {
-    await sleep(500);
+    await sleep(200);
 
     const temp = array[index1];
     array[index1] = array[index2];
@@ -103,11 +89,11 @@ const QuickSort = ({
   };
 
   const handleSort = () => {
-    quickSort([...originalData], 0, originalData.length - 1);
+    quickSort([...elements], 0, elements.length - 1);
   };
 
   const handleReset = () => {
-    setElements([...originalData]);
+    setElements([]);
     setActiveColumns([]);
   };
 
@@ -116,12 +102,8 @@ const QuickSort = ({
       <h1 className="text-center">Quick Sort</h1>
       <div>
         <Bar data={chartData} width={3} height={1} />
-        <button onClick={handleSort} disabled={sorting}>
-          Sort
-        </button>
-        <button onClick={handleReset} disabled={sorting}>
-          Reset
-        </button>
+        <button onClick={handleSort}>Sort</button>
+        <button onClick={handleReset}>Reset</button>
       </div>
     </div>
   );

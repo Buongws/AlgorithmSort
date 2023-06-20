@@ -2,14 +2,7 @@
 import { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
 
-const HeapSort = ({
-  elements,
-  setElements,
-  sorting,
-  activeColumns,
-  setActiveColumns,
-  originalData,
-}) => {
+const HeapSort = ({ elements, setElements, activeColumns, setActiveColumns }) => {
   const [chartData, setChartData] = useState({
     labels: elements.map((_, idx) => idx.toString()),
     datasets: [
@@ -31,14 +24,10 @@ const HeapSort = ({
           label: "Values",
           data: elements,
           backgroundColor: elements.map((_, idx) =>
-            activeColumns.includes(idx)
-              ? "rgba(220, 53, 69, 0.6)"
-              : "rgba(0,123,255,0.5)"
+            activeColumns.includes(idx) ? "rgba(220, 53, 69, 0.6)" : "rgba(0,123,255,0.5)"
           ),
           borderColor: elements.map((_, idx) =>
-            activeColumns.includes(idx)
-              ? "rgba(220, 53, 69, 1)"
-              : "rgba(0,123,255,1)"
+            activeColumns.includes(idx) ? "rgba(220, 53, 69, 1)" : "rgba(0,123,255,1)"
           ),
           borderWidth: 1,
         },
@@ -47,20 +36,20 @@ const HeapSort = ({
   }, [elements, activeColumns]);
 
   const heapSort = async () => {
-    const n = originalData.length;
+    const n = elements.length;
 
     // Xây dựng cây heap (sắp xếp cây heap)
     for (let i = Math.floor(n / 2) - 1; i >= 0; i--) {
-      await heapify(originalData, n, i);
+      await heapify(elements, n, i);
     }
 
     // Lần lượt loại bỏ phần tử gốc (phần tử lớn nhất) và đưa vào cuối mảng đã sắp xếp
     for (let i = n - 1; i > 0; i--) {
       await sleep(500);
       setActiveColumns([0, i]);
-      swap(originalData, 0, i);
-      await heapify(originalData, i, 0);
-      setElements([...originalData]);
+      swap(elements, 0, i);
+      await heapify(elements, i, 0);
+      setElements([...elements]);
     }
 
     setActiveColumns([]);
@@ -99,7 +88,7 @@ const HeapSort = ({
   };
 
   const handleReset = () => {
-    setElements([...originalData]);
+    setElements([]);
     setActiveColumns([]);
   };
 
@@ -110,12 +99,8 @@ const HeapSort = ({
         <Bar data={chartData} width={3} height={1} />
       </div>
       <div>
-        <button onClick={handleSort} disabled={sorting}>
-          Sort
-        </button>
-        <button onClick={handleReset} disabled={sorting}>
-          Reset
-        </button>
+        <button onClick={handleSort}>Sort</button>
+        <button onClick={handleReset}>Reset</button>
       </div>
     </div>
   );

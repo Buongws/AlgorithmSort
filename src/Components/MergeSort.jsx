@@ -3,15 +3,7 @@
 import { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
 
-const MergeSort = ({
-  elements,
-  setElements,
-  sorting,
-  setSorting,
-  activeColumns,
-  setActiveColumns,
-  originalData,
-}) => {
+const MergeSort = ({ elements, setElements, activeColumns, setActiveColumns }) => {
   const [chartData, setChartData] = useState({
     labels: elements.map((_, idx) => idx.toString()),
     datasets: [
@@ -33,14 +25,10 @@ const MergeSort = ({
           label: "Values",
           data: elements,
           backgroundColor: elements.map((_, idx) =>
-            activeColumns.includes(idx)
-              ? "rgba(220, 53, 69, 0.6)"
-              : "rgba(0,123,255,0.5)"
+            activeColumns.includes(idx) ? "rgba(220, 53, 69, 0.6)" : "rgba(0,123,255,0.5)"
           ),
           borderColor: elements.map((_, idx) =>
-            activeColumns.includes(idx)
-              ? "rgba(220, 53, 69, 1)"
-              : "rgba(0,123,255,1)"
+            activeColumns.includes(idx) ? "rgba(220, 53, 69, 1)" : "rgba(0,123,255,1)"
           ),
           borderWidth: 1,
         },
@@ -49,8 +37,6 @@ const MergeSort = ({
   }, [elements, activeColumns]);
 
   const mergeSort = async (array, start, end) => {
-    setSorting(true); // Update sorting state at the beginning
-
     if (start < end) {
       const mid = Math.floor((start + end) / 2);
       await mergeSort(array, start, mid);
@@ -58,9 +44,8 @@ const MergeSort = ({
       await merge(array, start, mid, end);
     }
 
-    // Update sorting state when sorting is completely done
     if (start === 0 && end === array.length - 1) {
-      setSorting(false);
+      return;
     }
   };
 
@@ -114,12 +99,11 @@ const MergeSort = ({
   };
 
   const handleSort = () => {
-    mergeSort([...originalData], 0, originalData.length - 1);
-    setSorting(true);
+    mergeSort(elements, 0, elements.length - 1);
   };
 
   const handleReset = () => {
-    setElements([...originalData]);
+    setElements([]);
     setActiveColumns([]);
   };
 
@@ -128,12 +112,8 @@ const MergeSort = ({
       <h1 className="text-center">Merge Sort</h1>
       <div>
         <Bar data={chartData} width={3} height={1} />
-        <button onClick={handleSort} disabled={sorting}>
-          Sort
-        </button>
-        <button onClick={handleReset} disabled={sorting}>
-          Reset
-        </button>
+        <button onClick={handleSort}>Sort</button>
+        <button onClick={handleReset}>Reset</button>
       </div>
     </div>
   );
