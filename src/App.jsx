@@ -65,7 +65,7 @@ const App = () => {
 
       <div className="input-box">
         <div className="webflow-style-input">
-          <input type="text" placeholder="Type data..." onChange={handleInputChanged} />
+          <input value={input} type="text" placeholder="Type data..." onChange={handleInputChanged} />
         </div>
         <div>
           <button className="button-49" onClick={handleOnAutoGenerateButtonClicked}>
