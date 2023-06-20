@@ -36,7 +36,9 @@ const BarChart = ({ elements, handleSort, handleReset, activeColumns }) => {
   }, [elements, activeColumns]);
   return (
     <div>
-      <Bar data={chartData} width={3} height={1} />
+      <div className="chart-container">
+        <Bar data={chartData} width={3} height={1} />
+      </div>
       <div className="button-action">
         <button className="button-64" onClick={handleSort}>
           <span className="text">Sort</span>
