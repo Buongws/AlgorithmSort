@@ -1,40 +1,7 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useState } from "react";
-import { Bar } from "react-chartjs-2";
+import BarChart from "./BarChart";
 
 const HeapSort = ({ elements, setElements, activeColumns, setActiveColumns }) => {
-  const [chartData, setChartData] = useState({
-    labels: elements.map((_, idx) => idx.toString()),
-    datasets: [
-      {
-        label: "Values",
-        data: elements,
-        backgroundColor: elements.map(() => "rgba(0,123,255,0.5)"),
-        borderColor: elements.map(() => "rgba(0,123,255,1)"),
-        borderWidth: 1,
-      },
-    ],
-  });
-
-  useEffect(() => {
-    setChartData({
-      labels: elements.map((_, idx) => idx.toString()),
-      datasets: [
-        {
-          label: "Values",
-          data: elements,
-          backgroundColor: elements.map((_, idx) =>
-            activeColumns.includes(idx) ? "rgba(220, 53, 69, 0.6)" : "rgba(0,123,255,0.5)"
-          ),
-          borderColor: elements.map((_, idx) =>
-            activeColumns.includes(idx) ? "rgba(220, 53, 69, 1)" : "rgba(0,123,255,1)"
-          ),
-          borderWidth: 1,
-        },
-      ],
-    });
-  }, [elements, activeColumns]);
-
   const heapSort = async () => {
     const n = elements.length;
 
@@ -95,13 +62,7 @@ const HeapSort = ({ elements, setElements, activeColumns, setActiveColumns }) =>
   return (
     <div>
       <h1 className="text-center">Heap Sort</h1>
-      <div>
-        <Bar data={chartData} width={3} height={1} />
-      </div>
-      <div>
-        <button onClick={handleSort}>Sort</button>
-        <button onClick={handleReset}>Reset</button>
-      </div>
+      <BarChart handleReset={handleReset} handleSort={handleSort} elements={elements} activeColumns={activeColumns} />
     </div>
   );
 };

@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
 
-const SortingBubble = ({ elements, setElements, sorting, activeColumns, setActiveColumns }) => {
+const BarChart = ({ elements, handleSort, handleReset, activeColumns }) => {
   const [chartData, setChartData] = useState({
     labels: elements.map((_, idx) => idx.toString()),
     datasets: [
@@ -34,56 +34,19 @@ const SortingBubble = ({ elements, setElements, sorting, activeColumns, setActiv
       ],
     });
   }, [elements, activeColumns]);
-
-  const bubbleSort = async () => {
-    const len = elements.length;
-
-    for (let i = 0; i < len - 1; i++) {
-      for (let j = 0; j < len - i - 1; j++) {
-        setActiveColumns([j, j + 1]);
-        if (elements[j] > elements[j + 1]) {
-          const temp = elements[j];
-          elements[j] = elements[j + 1];
-          elements[j + 1] = temp;
-
-          await sleep(500);
-          setElements([...elements]);
-        }
-      }
-    }
-
-    setActiveColumns([]);
-  };
-
-  const sleep = (ms) => {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  };
-
-  const handleSort = () => {
-    bubbleSort();
-  };
-
-  const handleReset = () => {
-    setElements([]);
-    setActiveColumns([]);
-  };
-
   return (
     <div>
-      <h1 className="text-center">Bubble Sort</h1>
-      <div>
-        <Bar data={chartData} width={3} height={1} />
-      </div>
-      <div>
-        <button onClick={handleSort} disabled={sorting}>
-          Sort
+      <Bar data={chartData} width={3} height={1} />
+      <div className="button-action">
+        <button className="button-64" onClick={handleSort}>
+          <span className="text">Sort</span>
         </button>
-        <button onClick={handleReset} disabled={sorting}>
-          Reset
+        <button className="button-64" onClick={handleReset}>
+          <span className="text">Reset</span>
         </button>
       </div>
     </div>
   );
 };
 
-export default SortingBubble;
+export default BarChart;

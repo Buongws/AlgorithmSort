@@ -1,11 +1,11 @@
 /* eslint-disable no-unused-vars */
 import { useMemo, useState, useEffect, useCallback } from "react";
 
-import SortingSelection from "./Components/SortingSelection";
-import SortingBubble from "./Components/SortingBubble";
-import QuickSort from "./Components/QuickSort";
-import MergeSort from "./Components/MergeSort";
-import HeapSort from "./Components/HeapSort";
+import SortingSelection from "./components/SelectionSort";
+import SortingBubble from "./components/BubbleSort";
+import QuickSort from "./components/QuickSort";
+import MergeSort from "./components/MergeSort";
+import HeapSort from "./components/HeapSort";
 
 const App = () => {
   const [toggleButton, setToggleButton] = useState("selectionSort");
@@ -30,28 +30,21 @@ const App = () => {
     const regex = /^[0-9,]*$/;
 
     if (regex.test(e.target.value) || e.target.value === "") {
-      setInput(e.target.value);
+      return setInput(e.target.value);
     }
 
     return;
   }, []);
 
-  // const handleOnInputKeyPress = useCallback((e) => {
-  //   if (
-  //     (e.keyCode < 48 || e.keyCode > 57) & (e.keyCode != 8) &&
-  //     e.keyCode != 44
-  //   ) {
-  //     e.preventDefault();
-  //   }
-  //   // if (!regex.test(e.target.value)) {
-  //   //   e.preventDefault();
-  //   // }
-  //   // console.log(/^[0-9\b.,]+$/.test(e.target.value));
-  //   // // return false;
-  //   // return /^[0-9\b.,]+$/.test(e.target.value);
-  // }, []);
+  const handleOnAutoGenerateButtonClicked = useCallback(() => {
+    setElements(Array.from({ length: 15 }, () => Math.floor(Math.random() * 100)));
+  }, []);
+
+  useEffect(() => {
+    setElements(input.split(",").filter((el) => !!el));
+  }, [input]);
   return (
-    <div>
+    <div style={{ height: "100vh" }}>
       <div className="center-div">
         <button className="button-5" role="button" onClick={handleButtonClicked} data-type="selectionSort">
           Selection Sort
@@ -70,14 +63,22 @@ const App = () => {
         </button>
       </div>
 
+      <div className="input-box">
+        <div className="webflow-style-input">
+          <input type="text" placeholder="Type data..." onChange={handleInputChanged} />
+        </div>
+        <div>
+          <button className="button-49" onClick={handleOnAutoGenerateButtonClicked}>
+            Auto generate data
+          </button>
+        </div>
+      </div>
+
       {toggleButton === "selectionSort" && <SortingSelection {...data} />}
       {toggleButton === "quickSort" && <QuickSort {...data} />}
       {toggleButton === "mergeSort" && <MergeSort {...data} />}
       {toggleButton === "bubbleSort" && <SortingBubble {...data} />}
       {toggleButton === "heapSort" && <HeapSort {...data} />}
-      <div>
-        <input value={input} type="text" onChange={handleInputChanged} />
-      </div>
     </div>
   );
 };
