@@ -1,16 +1,15 @@
 /* eslint-disable react/prop-types */
+
 import BarChart from "./BarChart";
 
 const HeapSort = ({ elements, setElements, activeColumns, setActiveColumns }) => {
   const heapSort = async () => {
     const n = elements.length;
 
-    // Xây dựng cây heap (sắp xếp cây heap)
     for (let i = Math.floor(n / 2) - 1; i >= 0; i--) {
       await heapify(elements, n, i);
     }
 
-    // Lần lượt loại bỏ phần tử gốc (phần tử lớn nhất) và đưa vào cuối mảng đã sắp xếp
     for (let i = n - 1; i > 0; i--) {
       await sleep(500);
       setActiveColumns([0, i]);

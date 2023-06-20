@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
+
 import BarChart from "./BarChart";
 
 const MergeSort = ({ elements, setElements, activeColumns, setActiveColumns }) => {

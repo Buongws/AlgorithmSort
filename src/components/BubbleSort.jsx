@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+
 import BarChart from "./BarChart";
 
 const SortingBubble = ({ elements, setElements, activeColumns, setActiveColumns }) => {

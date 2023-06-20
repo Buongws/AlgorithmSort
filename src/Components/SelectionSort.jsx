@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+
 import BarChart from "./BarChart";
 
 const SortingSelection = ({ elements, setElements, activeColumns, setActiveColumns }) => {
